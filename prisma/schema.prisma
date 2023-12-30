@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Site {
+  id            String        @id @default(uuid())
+  name          String
+  userId        String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  carousels     Carousel[]    @relation("SiteToCarousel")
+  authors       Author[]      @relation("SiteToAuthor")
+  billboards    Billboard[]   @relation("SiteToBillboard")
+  categories    Category[]    @relation("SiteToCategory")
+  subCategories SubCategory[] @relation("SiteToSubCategory")
+
+  blog Blog[] @relation("SiteToBlog")
+}
+
+model Carousel {
+  id        String   @id @default(uuid())
+  siteId    String
+  label     String
+  imageUrl  String
+  site      Site     @relation("SiteToCarousel", fields: [siteId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([siteId])
+}
+
+model Billboard {
+  id          String     @id @default(uuid())
+  siteId      String
+  site        Site       @relation("SiteToBillboard", fields: [siteId], references: [id])
+  label       String
+  description String
+  imageUrl    String
+  categories  Category[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([siteId])
+}
+
+model Category {
+  id          String        @id @default(uuid())
+  siteId      String // Foreign Key to site
+  site        Site          @relation("SiteToCategory", fields: [siteId], references: [id])
+  billboardId String // Foreign Key to Billboard
+  billboard   Billboard     @relation(fields: [billboardId], references: [id])
+  name        String
+  blogs       Blog[]        @relation("CategoryToBlog")
+  subCategory SubCategory[] @relation("CategoryToSubCategory")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([siteId])
+  @@index([billboardId])
+}
+
+model SubCategory {
+  id         String   @id @default(uuid())
+  siteId     String
+  site       Site     @relation("SiteToSubCategory", fields: [siteId], references: [id])
+  categoryId String
+  category   Category @relation("CategoryToSubCategory", fields: [categoryId], references: [id])
+  blogs      Blog[]   @relation("SubCategoryToBlog")
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([siteId])
+  @@index([categoryId])
+}
+
+model Author {
+  id         String @id @default(uuid())
+  name       String
+  imageUrl   String
+  siteId     String // Foreign Key to site
+  site       Site   @relation("SiteToAuthor", fields: [siteId], references: [id])
+  blogs      Blog[] @relation("AuthorToBlog")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([siteId])
+}
+
+model Blog {
+  id            String      @id @default(uuid())
+  siteId        String // Foreign Key to site
+  site          Site        @relation("SiteToBlog", fields: [siteId], references: [id])
+  categoryId    String // Foreign Key to Category
+  category      Category    @relation("CategoryToBlog", fields: [categoryId], references: [id])
+  authorId      String // Foreign Key to Category
+  author        Author      @relation("AuthorToBlog", fields: [authorId], references: [id])
+  title         String
+  content       String
+  headline      String
+  isFeatured    Boolean     @default(false)
+  isArchived    Boolean     @default(false)
+  subCategoryId String // Foreign Key to Category
+  subCategory   SubCategory @relation("SubCategoryToBlog", fields: [subCategoryId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([siteId])
+  @@index([authorId])
+  @@index([categoryId])
+  @@index([subCategoryId])
+}
