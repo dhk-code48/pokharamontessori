@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/lib/theme-provider";
 import { siteMetadata } from "@/lib/siteMetadata";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
