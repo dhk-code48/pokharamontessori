@@ -9,6 +9,7 @@ import { Category } from "@prisma/client";
 import getSite from "@/actions/getSite";
 import SchoolLogo from "./logo";
 import getCategories from "@/actions/getCategories";
+import { Facebook, Instagram } from "lucide-react";
 
 interface FooterLink {
   id: number;
@@ -45,26 +46,35 @@ function FooterLink({ url, text }: FooterLink) {
 function CategoryLink(category: Category) {
   return (
     <li className="flex justify-center">
-      <Link href={`/${category.id}`} className="hover:dark:text-violet-400">
+      <Link href={`/category/${category.id}`} className="hover:dark:text-violet-400">
         {category.name}
       </Link>
     </li>
   );
 }
 
-function RenderSocialIcon({ social }: { social: string | undefined }) {
-  switch (social) {
-    case "WEBSITE":
-      return <CgWebsite />;
-    case "TWITTER":
-      return <AiFillTwitterCircle />;
-    case "YOUTUBE":
-      return <AiFillYoutube />;
-    case "DISCORD":
-      return <FaDiscord />;
-    default:
-      return null;
-  }
+function RenderSocialIcon({ social, link }: { social: string | undefined; link: string }) {
+  return (
+    <Link href={link}>
+      <div className="w-10 h-10 rounded-full flex items-center justify-center border hover:bg-white hover:text-black">
+        {social === "WEBSITE" ? (
+          <CgWebsite />
+        ) : social === "TWITTER" ? (
+          <AiFillTwitterCircle />
+        ) : social === "YOUTUBE" ? (
+          <AiFillYoutube />
+        ) : social === "DISCORD" ? (
+          <FaDiscord />
+        ) : social === "FACEBOOK" ? (
+          <Facebook />
+        ) : social === "INSTAGRAM" ? (
+          <Instagram />
+        ) : (
+          <></>
+        )}
+      </div>
+    </Link>
+  );
 }
 
 export default async function Footer() {
@@ -73,8 +83,8 @@ export default async function Footer() {
   const site = await getSite();
   return (
     <footer className="py-6 dark:bg-black dark:text-gray-50 border-t">
-      <div className="container px-0 lg:px-6 mx-auto space-y-6 divide-y divide-gray-400 md:space-y-12 divide-opacity-50">
-        <div className="flex items-center justify-center flex-col gap-y-5 lg:grid grid-cols-3">
+      <div className="container px-0 lg:px-6 mx-auto  divide-y divide-gray-400 divide-opacity-50">
+        <div className="flex py-3 items-center justify-center flex-col gap-y-5 lg:grid grid-cols-3">
           <div className="pb-6 md:pb-0">
             <SchoolLogo dark={site?.logoDark} light={site?.logoLight} />
           </div>
@@ -91,7 +101,7 @@ export default async function Footer() {
             {site && site.facebookId && (
               <div
                 className="fb-page"
-                data-href={`https://www.facebook.com/pokharamontessori`}
+                data-href={`https://www.facebook.com/${site.facebookId}`}
                 data-tabs="timeline"
                 data-width=""
                 data-height="200px"
@@ -101,17 +111,27 @@ export default async function Footer() {
                 data-show-facepile="true"
               >
                 <blockquote
-                  cite={`https://www.facebook.com/pokharamontessori`}
+                  cite={`https://www.facebook.com/${site.facebookId}`}
                   className="fb-xfbml-parse-ignore"
                 >
-                  <a href={`https://www.facebook.com/pokharamontessori`}>{site.name}</a>
+                  <a href={`https://www.facebook.com/${site.facebookId}`}>{site.name}</a>
                 </blockquote>
               </div>
             )}
           </div>
         </div>
-        <div className="flex flex-wrap justify-center gap-x-1 text-nowrap pt-6">
-          ©{new Date().getFullYear()} All rights reserved and
+        <div className="flex py-3 flex-wrap md:gap-x-3 gap-x-2 justify-center text-nowrap lg:gap-x-5 ">
+          {site?.facebookId && (
+            <RenderSocialIcon
+              link={"https://www.facebook.com/" + site.facebookId}
+              social="FACEBOOK"
+            />
+          )}
+          {site?.youtube && <RenderSocialIcon link={site.youtube} social="YOUTUBER" />}
+          {site?.instagram && <RenderSocialIcon link={site.instagram} social="INSTAGRAM" />}
+        </div>
+        <div className="flex flex-wrap justify-center gap-x-1 text-nowrap pt-3">
+          ©{new Date().getFullYear()} All rights reserved
         </div>
       </div>
     </footer>
