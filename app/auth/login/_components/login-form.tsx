@@ -19,8 +19,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-// import { FormError } from "@/components/form-error";
-// import { FormSuccess } from "@/components/form-success";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -98,8 +98,8 @@ const LoginForm = ({ className, ...props }: UserAuthFormProps) => {
               )}
             />
           </div>
-          {/* <FormError message={error} /> */}
-          {/* <FormSuccess message={success} /> */}
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button disabled={isPending} type="submit" className="w-full">
             Login
           </Button>
