@@ -11,49 +11,44 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
 
   const routes = [
     {
-      href: `/${params.siteId}`,
+      href: `/admin`,
       label: "Overview",
-      active: pathname === `/${params.siteId}`,
+      active: pathname === `/admin`,
     },
     {
-      href: `/${params.siteId}/carousel`,
+      href: `/admin/carousel`,
       label: "Carousel",
-      active: pathname === `/${params.siteId}/carousel`,
+      active: pathname === `/admin/carousel`,
     },
     {
-      href: `/${params.siteId}/billboards`,
+      href: `/admin/billboards`,
       label: "Billboards",
-      active: pathname === `/${params.siteId}/billboards`,
+      active: pathname === `/admin/billboards`,
     },
     {
-      href: `/${params.siteId}/categories`,
+      href: `/admin/categories`,
       label: "Categories",
-      active: pathname === `/${params.siteId}/categories`,
+      active: pathname === `/admin/categories`,
     },
     {
-      href: `/${params.siteId}/subcategories`,
+      href: `/admin/subcategories`,
       label: "SubCategories",
-      active: pathname === `/${params.siteId}/subcategories`,
+      active: pathname === `/admin/subcategories`,
     },
     {
-      href: `/${params.siteId}/authors`,
+      href: `/admin/authors`,
       label: "Authors",
-      active: pathname === `/${params.siteId}/authors`,
+      active: pathname === `/admin/authors`,
     },
     {
-      href: `/${params.siteId}/blogs`,
+      href: `/admin/blogs`,
       label: "Blogs",
-      active: pathname === `/${params.siteId}/blogs`,
+      active: pathname === `/admin/blogs`,
     },
     {
-      href: `/${params.siteId}/results`,
-      label: "Results",
-      active: pathname === `/${params.siteId}/results`,
-    },
-    {
-      href: `/${params.siteId}/settings`,
+      href: `/admin/settings`,
       label: "Settings",
-      active: pathname === `/${params.siteId}/settings`,
+      active: pathname === `/admin/settings`,
     },
   ];
 
