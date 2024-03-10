@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import Head from "next/head";
 import getSite from "@/actions/getSite";
 import { siteMetadata } from "@/lib/siteMetadata";
+import Filter from "@/components/filter";
 
 interface CategoryPageProp {
   params: { categoryId: string };
@@ -20,52 +21,52 @@ interface CategoryPageProp {
   };
 }
 
-// export async function generateMetadata(
-//   { params }: CategoryPageProp,
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const category = await getCategory(params.categoryId);
-//   const site = await getSite();
-//   const billboard = await getBillboard(params.categoryId);
+export async function generateMetadata(
+  { params }: CategoryPageProp,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const category = await getCategory(params.categoryId);
+  const site = await getSite();
+  const billboard = await getBillboard(params.categoryId);
 
-//   if (!category || !site || !billboard) {
-//     return {
-//       ...siteMetadata,
-//     };
-//   }
+  if (!category || !site || !billboard) {
+    return {
+      ...siteMetadata,
+    };
+  }
 
-//   return {
-//     title: category.name + " || " + site.name,
-//     description: billboard.description,
-//     openGraph: {
-//       title: category.name + " || " + site.name,
-//       description: billboard.description,
-//       url: siteMetadata.siteUrl + "/category/" + category.id,
-//       siteName: siteMetadata.title,
-//       locale: "en_US",
-//       type: "article",
-//       publishedTime: new Date(category.createdAt).toISOString(),
-//       modifiedTime: new Date(category.updatedAt).toISOString(),
-//       authors: [siteMetadata.author],
-//       images: [
-//         {
-//           url: billboard.imageUrl,
-//           alt: billboard.label,
-//         },
-//       ],
-//     },
-//     twitter: {
-//       title: category.name,
-//       description: billboard.description,
-//       images: [
-//         {
-//           url: billboard.imageUrl,
-//           alt: billboard.label,
-//         },
-//       ],
-//     },
-//   };
-// }
+  return {
+    title: category.name + " || " + site.name,
+    description: billboard.description,
+    openGraph: {
+      title: category.name + " || " + site.name,
+      description: billboard.description,
+      url: siteMetadata.siteUrl + "/category/" + category.id,
+      siteName: siteMetadata.title,
+      locale: "en_US",
+      type: "article",
+      publishedTime: new Date(category.createdAt).toISOString(),
+      modifiedTime: new Date(category.updatedAt).toISOString(),
+      authors: [siteMetadata.author],
+      images: [
+        {
+          url: billboard.imageUrl,
+          alt: billboard.label,
+        },
+      ],
+    },
+    twitter: {
+      title: category.name,
+      description: billboard.description,
+      images: [
+        {
+          url: billboard.imageUrl,
+          alt: billboard.label,
+        },
+      ],
+    },
+  };
+}
 
 const CategoryPage: FC<CategoryPageProp> = async ({ params, searchParams }) => {
   const blogs = await getBlogs({
@@ -83,10 +84,6 @@ const CategoryPage: FC<CategoryPageProp> = async ({ params, searchParams }) => {
 
   return (
     <div>
-      <Head>
-        <title>{category.name}</title>
-        <meta property="og:image" content={site.seoBanner?.toString()} />
-      </Head>
       <div className="w-full relative">
         <Image
           className="h-80 lg:h-72 object-cover"
@@ -102,7 +99,7 @@ const CategoryPage: FC<CategoryPageProp> = async ({ params, searchParams }) => {
       </div>
       <div className="flex flex-wrap lg:gap-x-16 container mt-10">
         <div>
-          {/* <Filter valueKey="subcategoryId" name="Category" data={category.subCategory} /> */}
+          <Filter valueKey="subcategoryId" name="Category" data={category.subCategory} />
         </div>
 
         <div className="flex flex-wrap lg:gap-x-10 gap-y-5">

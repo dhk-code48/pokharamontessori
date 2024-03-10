@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Category } from "@prisma/client";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface MainNavProps {
   data: Category[];
@@ -43,6 +44,7 @@ const MainNav: React.FC<MainNavProps> = ({ data }) => {
           {route.label}
         </Link>
       ))}
+      <ThemeToggle />
     </nav>
   );
 };

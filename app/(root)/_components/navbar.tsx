@@ -13,7 +13,7 @@ const Navbar = async () => {
   return (
     <div>
       <div className="bg-background">
-        <div className="hidden container text-white lg:flex justify-between items-center h-10">
+        <div className="hidden container text-gray-800 dark:text-white lg:flex justify-between items-center h-10">
           <div className="flex items-center gap-x-5">
             <Phone size={20} />
             {site?.phoneNumber}

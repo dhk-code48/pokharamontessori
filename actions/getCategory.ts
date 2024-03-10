@@ -1,18 +1,18 @@
 "use server";
 
 import db from "@/lib/prismadb";
-import { Author, Billboard, Category } from "@prisma/client";
+import { Author, Billboard, Category, SubCategory } from "@prisma/client";
 
 const getCategory = async (
   categoryId: string
-): Promise<(Category & { billboard: Billboard }) | null> => {
+): Promise<(Category & { subCategory: SubCategory[]; billboard: Billboard }) | null> => {
   const siteId = process.env.NEXT_SITEID;
 
   if (!siteId) {
     return null;
   }
 
-  let category: (Category & { billboard: Billboard }) | null;
+  let category: (Category & { subCategory: SubCategory[]; billboard: Billboard }) | null;
 
   try {
     category = await db.category.findUnique({
@@ -20,6 +20,7 @@ const getCategory = async (
         id: categoryId,
       },
       include: {
+        subCategory: true,
         billboard: true,
       },
     });
