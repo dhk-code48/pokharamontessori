@@ -1,15 +1,10 @@
 import getBillboard from "@/actions/getBillboard";
 import getBlogs from "@/actions/getBlogs";
 import getCategory from "@/actions/getCategory";
-import getSubCategories from "@/actions/getSubcategories";
 import BlogCard from "@/components/blog-card";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { FC } from "react";
-// import Filter from "../../../../components/filter";
 import { Metadata, ResolvingMetadata } from "next";
-import { redirect } from "next/navigation";
-import Head from "next/head";
 import getSite from "@/actions/getSite";
 import { siteMetadata } from "@/lib/siteMetadata";
 import Filter from "@/components/filter";
