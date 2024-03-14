@@ -4,8 +4,9 @@ export const siteMetadata = {
   headerTitle: "Pokhara Montessori",
   description: "Pokhara Montessori a pre-school that have every thing a child needs",
   language: "en-us",
+
   theme: "system", // system, dark or light
-  siteUrl: "http://localhost:3000", // your website URL
+  siteUrl: "https://pokharamontessori.gbshostel.com", // your website URL
   //   siteLogo: "/logo.png",
   //   socialBanner: "/social-banner.png", // add social banner in the public folder
   email: "pokharamontessori@gmail.com",

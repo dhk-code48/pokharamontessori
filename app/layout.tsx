@@ -8,7 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(siteMetadata.siteUrl),
   title: {
     template: `%s | ${siteMetadata.title}`,
@@ -16,9 +16,13 @@ export const metadata = {
   },
   description: siteMetadata.description,
   openGraph: {
+    images: [
+      "https://pokharamontessori.gbshostel.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdmrtcrfzc%2Fimage%2Fupload%2Fv1710066001%2Fxi6sxhano1p41mnqajlb.png&w=3840&q=75",
+    ],
     title: siteMetadata.title,
     description: siteMetadata.description,
     url: siteMetadata.siteUrl,
+
     siteName: siteMetadata.title,
     locale: "en_US",
     type: "website",
