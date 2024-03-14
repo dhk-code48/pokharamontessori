@@ -1,14 +1,12 @@
-import getBlog from "@/actions/getBlog";
 import AuthorProfile from "@/components/author-profile";
 import { Calendar } from "lucide-react";
 import moment from "moment";
 import React, { FC } from "react";
-import getBlogs from "@/actions/getBlogs";
 import BlogCard from "@/components/blog-card";
 import { Metadata } from "next";
 import BlogContent from "@/components/blog-content";
-import getSite from "@/actions/getSite";
 import { siteMetadata } from "@/lib/siteMetadata";
+import db from "@/lib/prismadb";
 
 interface BlogPageProps {
   params: {
@@ -18,8 +16,11 @@ interface BlogPageProps {
 }
 
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  const blog = await getBlog(params.blogId);
-  const site = await getSite();
+  const blog = await db.blog.findUnique({
+    where: { id: params.blogId },
+    include: { author: true },
+  });
+  const site = await db.site.findFirst();
 
   if (!blog) {
     return {
@@ -66,11 +67,16 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 }
 
 const BlogPage: FC<BlogPageProps> = async ({ params }) => {
-  const blog = await getBlog(params.blogId);
+  const blog = await db.blog.findUnique({
+    where: { id: params.blogId },
+    include: { author: true },
+  });
   if (!blog) {
     return;
   }
-  const relatedBlogs = await getBlogs({ categoryId: blog.categoryId, isArchived: false });
+  const relatedBlogs = await db.blog.findMany({
+    where: { categoryId: blog.categoryId, isArchived: false },
+  });
 
   const jsonLd = {
     "@context": "https://schema.org",

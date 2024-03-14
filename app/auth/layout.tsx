@@ -1,15 +1,13 @@
-import getSite from "@/actions/getSite";
+import db from "@/lib/prismadb";
+import { siteMetadata } from "@/lib/siteMetadata";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
-};
+export const metadata: Metadata = { ...siteMetadata };
 
 export default async function AuthenticationPage({ children }: { children: React.ReactNode }) {
-  const site = await getSite();
+  const site = await db.site.findFirst();
   if (!site) {
     return <></>;
   }

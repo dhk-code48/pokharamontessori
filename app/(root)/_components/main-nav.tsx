@@ -21,7 +21,7 @@ const MainNav: React.FC<MainNavProps> = ({ data }) => {
   }));
 
   return (
-    <nav className="flex justify-center items-center py-5 gap-x-4">
+    <nav className="flex flex-wrap justify-center items-center py-5 gap-x-4">
       <Link
         key="/"
         href="/"

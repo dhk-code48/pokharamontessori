@@ -22,7 +22,7 @@ const BlogCard: FC<{ blog: Blog; className?: string }> = ({ blog, className }) =
 
   return (
     <Card
-      className={cn("w-full lg:w-[350px] mb-2", className)}
+      className={cn("w-full lg:w-[320px] mb-2", className)}
       onClick={() => navigate.push("/blog/" + blog.id)}
     >
       <CardHeader>

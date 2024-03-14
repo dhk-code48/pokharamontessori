@@ -1,13 +1,10 @@
-import getBillboard from "@/actions/getBillboard";
-import getBlogs from "@/actions/getBlogs";
-import getCategory from "@/actions/getCategory";
 import BlogCard from "@/components/blog-card";
 import Image from "next/image";
 import React, { FC } from "react";
 import { Metadata, ResolvingMetadata } from "next";
-import getSite from "@/actions/getSite";
 import { siteMetadata } from "@/lib/siteMetadata";
 import Filter from "@/components/filter";
+import db from "@/lib/prismadb";
 
 interface CategoryPageProp {
   params: { categoryId: string };
@@ -20,9 +17,11 @@ export async function generateMetadata(
   { params }: CategoryPageProp,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const category = await getCategory(params.categoryId);
-  const site = await getSite();
-  const billboard = await getBillboard(params.categoryId);
+  const category = await db.category.findUnique({ where: { id: params.categoryId } });
+  const site = await db.site.findFirst();
+  const billboard = await db.billboard.findFirst({
+    where: { categories: { some: { id: params.categoryId } } },
+  });
 
   if (!category || !site || !billboard) {
     return {
@@ -64,14 +63,19 @@ export async function generateMetadata(
 }
 
 const CategoryPage: FC<CategoryPageProp> = async ({ params, searchParams }) => {
-  const blogs = await getBlogs({
-    categoryId: params.categoryId,
-    isArchived: false,
-    subcategoryId: searchParams.subcategoryId,
+  const blogs = await db.blog.findMany({
+    where: {
+      categoryId: params.categoryId,
+      isArchived: false,
+      subCategoryId: searchParams.subcategoryId,
+    },
   });
 
-  const category = await getCategory(params.categoryId);
-  const site = await getSite();
+  const category = await db.category.findUnique({
+    where: { id: params.categoryId },
+    include: { billboard: true, subCategory: true },
+  });
+  const site = await db.site.findFirst();
 
   if (!category || !site) {
     return;

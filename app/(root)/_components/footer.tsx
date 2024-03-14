@@ -6,10 +6,11 @@ import { FaDiscord } from "react-icons/fa";
 import { AiFillTwitterCircle, AiFillYoutube } from "react-icons/ai";
 import Image from "next/image";
 import { Category } from "@prisma/client";
-import getSite from "@/actions/getSite";
+
 import SchoolLogo from "./logo";
-import getCategories from "@/actions/getCategories";
+
 import { Facebook, Instagram } from "lucide-react";
+import db from "@/lib/prismadb";
 
 interface FooterLink {
   id: number;
@@ -78,9 +79,9 @@ function RenderSocialIcon({ social, link }: { social: string | undefined; link: 
 }
 
 export default async function Footer() {
-  const categories = await getCategories();
+  const categories = await db.category.findMany();
 
-  const site = await getSite();
+  const site = await db.site.findFirst();
   return (
     <footer className="py-6 dark:bg-black dark:text-gray-50 border-t">
       <div className="container px-0 lg:px-6 mx-auto  divide-y divide-gray-400 divide-opacity-50">

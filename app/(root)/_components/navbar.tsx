@@ -1,14 +1,12 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import Image from "next/image";
 import React from "react";
 import MainNav from "./main-nav";
-import getCategories from "@/actions/getCategories";
-import getSite from "@/actions/getSite";
 import SchoolLogo from "./logo";
+import db from "@/lib/prismadb";
 
 const Navbar = async () => {
-  const categories = await getCategories();
-  const site = await getSite();
+  const categories = await db.category.findMany();
+  const site = await db.site.findFirst();
 
   return (
     <div>
